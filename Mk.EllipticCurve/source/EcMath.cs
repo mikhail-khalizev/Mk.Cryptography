@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -8,7 +9,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace Mk.EllipticCurve
 {
-    public class MyMath
+    public class EcMath
     {
         /// <summary>
         /// Returns 'y', where 'y = 1 / x (mod n)'. I.e. 'x * y (mod n) = 1'.
@@ -83,8 +84,17 @@ namespace Mk.EllipticCurve
                 bc = bcNew;
             }
 
+            bc %= n;
             if (bc < 0)
                 bc += n;
+
+#if DEBUG || TEST
+
+            var mul = (bc * x) % n;
+            Trace.Assert(mul == 0 || mul == 1);
+
+#endif
+
             return bc;
         }
     }

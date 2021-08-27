@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Mk.EllipticCurve.Tests
 {
-    public class MyMathTest
+    public class EcMathTest
     {
         [Theory]
         [InlineData(0, 0, 11)]
@@ -26,7 +26,7 @@ namespace Mk.EllipticCurve.Tests
         [InlineData(12, 1, 11)]
         public void CheckInvert(int x, int y, int n)
         {
-            var yy = MyMath.Invert(x, n);
+            var yy = EcMath.Invert(x, n);
             yy.Should().Be(y % n);
         }
 
@@ -45,7 +45,7 @@ namespace Mk.EllipticCurve.Tests
         [InlineData(11, 1, 10)]
         public void CheckInvertNotPrimary(int x, int y, int n)
         {
-            var yy = MyMath.Invert(x, n);
+            var yy = EcMath.Invert(x, n);
             yy.Should().Be(y % n);
         }
     }
