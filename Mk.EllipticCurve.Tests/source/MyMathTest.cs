@@ -27,10 +27,26 @@ namespace Mk.EllipticCurve.Tests
         public void CheckInvert(int x, int y, int n)
         {
             var yy = MyMath.Invert(x, n);
-            var xx = MyMath.Invert(y, n);
-
             yy.Should().Be(y % n);
-            xx.Should().Be(x % n);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 10)]  // zero
+        [InlineData(1, 1, 10)]  
+        [InlineData(2, 5, 10)]  // zero
+        [InlineData(3, 7, 10)]  
+        [InlineData(4, 5, 10)]  // zero
+        [InlineData(5, 8, 10)]  // zero
+        [InlineData(6, 5, 10)]  // zero
+        [InlineData(7, 3, 10)]  
+        [InlineData(8, 5, 10)]  // zero
+        [InlineData(9, 9, 10)]
+        [InlineData(10, 0, 10)] // zero
+        [InlineData(11, 1, 10)]
+        public void CheckInvertNotPrimary(int x, int y, int n)
+        {
+            var yy = MyMath.Invert(x, n);
+            yy.Should().Be(y % n);
         }
     }
 }
