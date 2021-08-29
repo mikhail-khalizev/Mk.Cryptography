@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Mk.EllipticCurve\Mk.EllipticCurve.csproj" />
+	  <ProjectReference Include="..\Mk.EllipticCurve\Mk.Сryptography.csproj" />
 	</ItemGroup>
 
 </Project>
