@@ -1,6 +1,6 @@
 using Xunit.Abstractions;
 
-namespace Mk.ReverseEngineering.Tests
+namespace Mk.Cryptography.Tests
 {
     public class BaseTest
     {
