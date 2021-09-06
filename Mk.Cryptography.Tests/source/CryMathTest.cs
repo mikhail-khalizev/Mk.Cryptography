@@ -21,7 +21,7 @@ namespace Mk.Cryptography.Tests
         [InlineData(12, 1, 11)]
         public void CheckInvert(int x, int y, int n)
         {
-            var yy = EcMath.Invert(x, n);
+            var yy = CryMath.Invert(x, n);
             yy.Should().Be(y % n);
         }
 
@@ -40,7 +40,7 @@ namespace Mk.Cryptography.Tests
         [InlineData(11, 1, 10)]
         public void CheckInvertNotPrimary(int x, int y, int n)
         {
-            var yy = EcMath.Invert(x, n);
+            var yy = CryMath.Invert(x, n);
             yy.Should().Be(y % n);
         }
     }

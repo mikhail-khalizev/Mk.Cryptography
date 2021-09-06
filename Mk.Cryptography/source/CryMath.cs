@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Mk.Cryptography
 {
-    public class EcMath
+    public class CryMath
     {
         /// <summary>
         /// Returns 'y', where 'y = 1 / x (mod n)'. I.e. 'x * y (mod n) = 1'.
@@ -78,9 +78,7 @@ namespace Mk.Cryptography
                 bc = bcNew;
             }
 
-            bc %= n;
-            if (bc < 0)
-                bc += n;
+            bc = PositiveModulo(bc, n);
 
 #if DEBUG || TEST
 
@@ -90,6 +88,16 @@ namespace Mk.Cryptography
 #endif
 
             return bc;
+        }
+
+        public static BigInteger PositiveModulo(BigInteger dividend, BigInteger divisor)
+        {
+            var remainder = BigInteger.Remainder(dividend, divisor);
+
+            if (remainder < 0)
+                remainder += divisor;
+
+            return remainder;
         }
     }
 }
