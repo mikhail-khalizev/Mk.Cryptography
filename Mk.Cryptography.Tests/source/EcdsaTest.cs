@@ -18,6 +18,8 @@ namespace Mk.Cryptography.Tests
             var signature = privateKey.Sign(message);
 
             publicKey.Verify(message, signature).Should().Be(true);
+            publicKey.Verify(message, new EcSignature(signature.R, signature.S + 1)).Should().Be(false);
+            publicKey.Verify(message, new EcSignature(signature.R + 1, signature.S)).Should().Be(false);
         }
     }
 }
