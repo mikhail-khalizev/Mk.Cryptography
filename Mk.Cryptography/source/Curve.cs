@@ -85,5 +85,33 @@ namespace Mk.Cryptography
 
             return new EcPoint(x, y);
         }
+
+        public EcPoint Multiply(EcPoint a, int n)
+        {
+            if (n < 0)
+                throw new ArgumentOutOfRangeException(nameof(n));
+            if (n == 0)
+                return new EcPoint();
+            if (n == 1)
+                return a;
+
+            var nc = n;
+            var power = a;
+            var result = new EcPoint();
+
+            while (true)
+            {
+                if ((nc & 1) != 0) 
+                    result = Add(result, power);
+
+                nc >>= 1;
+                if (nc == 0)
+                    break;
+
+                power = Add(power, power);
+            }
+
+            return result;
+        }
     }
 }
