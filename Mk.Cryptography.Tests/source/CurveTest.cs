@@ -36,6 +36,7 @@ namespace Mk.Cryptography.Tests
         [InlineData(3, 6, 2, 80, 10)]
         [InlineData(3, 6, 3, 80, 87)]
         [InlineData(3, 6, 4, 3, 91)]
+        [InlineData(3, 6, 5, 0, 0)]
         public void CheckMultiply(int ax, int ay, int n, int cx, int cy)
         {
             // https://cdn.rawgit.com/andreacorbellini/ecc/920b29a/interactive/modk-mul.html

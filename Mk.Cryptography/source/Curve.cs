@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Numerics;
 
@@ -50,6 +51,9 @@ namespace Mk.Cryptography
 
         public bool Contains(EcPoint point)
         {
+            if (point.IsZero)
+                return true;
+
             return BigInteger.Pow(point.Y, 2) % P == 
                    (BigInteger.Pow(point.X, 3) + A * point.X + B) % P;
         }
@@ -83,7 +87,13 @@ namespace Mk.Cryptography
             var x = CryptMath.PositiveModulo(BigInteger.Pow(m, 2) - a.X - b.X, P);
             var y = CryptMath.PositiveModulo(-(a.Y + m * (x - a.X)), P);
 
-            return new EcPoint(x, y);
+            var point = new EcPoint(x, y);
+            
+#if DEBUG || TEST
+            Trace.Assert(Contains(point));
+#endif
+
+            return point;
         }
 
         public EcPoint Multiply(EcPoint a, int n)
@@ -110,6 +120,10 @@ namespace Mk.Cryptography
 
                 power = Add(power, power);
             }
+
+#if DEBUG || TEST
+            Trace.Assert(Contains(result));
+#endif
 
             return result;
         }
