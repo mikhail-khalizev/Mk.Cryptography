@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Numerics;
+using System.Security.Cryptography;
 
 namespace Mk.Cryptography
 {
@@ -100,6 +102,26 @@ namespace Mk.Cryptography
                 remainder += divisor;
 
             return remainder;
+        }
+
+        public static BigInteger BigRandom(BigInteger fromInclusive, BigInteger toExclusive)
+        {
+            if (toExclusive <= fromInclusive)
+                throw new ArgumentException($"{nameof(toExclusive)} <= {nameof(fromInclusive)}");
+
+            var range = toExclusive - fromInclusive;
+            
+            var bytes = new byte[range.GetByteCount(true)];
+            RandomNumberGenerator.Fill(bytes);
+            var rndBig = new BigInteger(bytes, true) % range;
+
+            var result = fromInclusive + rndBig;
+
+#if DEBUG || TEST
+            Trace.Assert(fromInclusive <= result && result < toExclusive);
+#endif
+
+            return result;
         }
     }
 }

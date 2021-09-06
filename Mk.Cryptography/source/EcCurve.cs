@@ -8,7 +8,7 @@ namespace Mk.Cryptography
     /// <summary>
     /// Represent elliptic curve: y ^ 2 = x ^ 3 + a * x + b (mod p).
     /// </summary>
-    public class Curve
+    public class EcCurve
     {
         /// <summary>
         /// https://tools.ietf.org/id/draft-kasamatsu-bncurves-01.html#curve256
@@ -23,7 +23,7 @@ namespace Mk.Cryptography
         /// q = 0xfffffffffffcf0cd46e5f25eee71a49e0cdc65fb1299921af62d536cd10b500d
         /// h = 1
         /// </remarks>
-        public static Curve Fp256BN { get; } = new(
+        public static EcCurve Fp256BN { get; } = new(
             0, 3, 1, 2,
             "fffffffffffcf0cd46e5f25eee71a49f0cdc65fb12980a82d3292ddbaed33013",
             "fffffffffffcf0cd46e5f25eee71a49e0cdc65fb1299921af62d536cd10b500d");
@@ -32,15 +32,15 @@ namespace Mk.Cryptography
         public BigInteger A { get; }
         public BigInteger B { get; }
         public BigInteger P { get; }
-        public BigInteger Q { get; }
+        public BigInteger N { get; }
 
-        public EcPoint BasePoint { get; }
+        public EcPoint G { get; }
 
-        public Curve(BigInteger a, BigInteger b, BigInteger x, BigInteger y, string pHex, string qHex)
-            : this(a, b, x, y, BigInteger.Parse('0' + pHex, NumberStyles.HexNumber), BigInteger.Parse('0' + qHex, NumberStyles.HexNumber))
+        public EcCurve(BigInteger a, BigInteger b, BigInteger gx, BigInteger gy, string pHex, string nHex)
+            : this(a, b, gx, gy, BigInteger.Parse('0' + pHex, NumberStyles.HexNumber), BigInteger.Parse('0' + nHex, NumberStyles.HexNumber))
         { }
 
-        public Curve(BigInteger a, BigInteger b, BigInteger x, BigInteger y, BigInteger p, BigInteger q)
+        public EcCurve(BigInteger a, BigInteger b, BigInteger gx, BigInteger gy, BigInteger p, BigInteger n)
         {
             if (p <= 0)
                 throw new ArgumentOutOfRangeException($"'{nameof(p)}' is negative or zero.");
@@ -48,8 +48,8 @@ namespace Mk.Cryptography
             A = a;
             B = b;
             P = p;
-            Q = q;
-            BasePoint = new EcPoint(x, y);
+            N = n;
+            G = new EcPoint(gx, gy);
         }
 
         public bool Contains(EcPoint point)

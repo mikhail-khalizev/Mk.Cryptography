@@ -3,13 +3,13 @@ using Xunit;
 
 namespace Mk.Cryptography.Tests
 {
-    public class CurveTest
+    public class EcCurveTest
     {
         [Fact]
         public void CheckCurveContainsBasePoint()
         {
-            var c = Curve.Fp256BN;
-            c.Contains(c.BasePoint).Should().BeTrue();
+            var c = EcCurve.Fp256BN;
+            c.Contains(c.G).Should().BeTrue();
         }
 
         [Theory]
@@ -20,7 +20,7 @@ namespace Mk.Cryptography.Tests
         {
             // https://cdn.rawgit.com/andreacorbellini/ecc/920b29a/interactive/modk-add.html
 
-            var curve = new Curve(2, 3, 0, 0, 97, 0);
+            var curve = new EcCurve(2, 3, 0, 0, 97, 0);
 
             var c = curve.Add(
                 new EcPoint(ax, ay),
@@ -41,7 +41,7 @@ namespace Mk.Cryptography.Tests
         {
             // https://cdn.rawgit.com/andreacorbellini/ecc/920b29a/interactive/modk-mul.html
 
-            var curve = new Curve(2, 3, 0, 0, 97, 0);
+            var curve = new EcCurve(2, 3, 0, 0, 97, 0);
 
             var c = curve.Multiply(
                 new EcPoint(ax, ay),
@@ -54,9 +54,9 @@ namespace Mk.Cryptography.Tests
         [Fact]
         public void CheckQofFp256BN()
         {
-            var c = Curve.Fp256BN;
+            var c = EcCurve.Fp256BN;
 
-            var p = c.Multiply(c.BasePoint, c.Q);
+            var p = c.Multiply(c.G, c.N);
             p.IsZero.Should().BeTrue();
         }
     }
