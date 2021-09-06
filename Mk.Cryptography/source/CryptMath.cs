@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Mk.Cryptography
 {
-    public class CryMath
+    public class CryptMath
     {
         /// <summary>
         /// Returns 'y', where 'y = 1 / x (mod n)'. I.e. 'x * y (mod n) = 1'.
@@ -12,7 +12,9 @@ namespace Mk.Cryptography
         public static BigInteger Invert(BigInteger x, BigInteger n)
         {
             // Extended Euclidean Algorithm. It's the 'division' in elliptic curves.
-            
+
+            x = PositiveModulo(x, n);
+
             var a = n;
             var b = x % n;
 
@@ -92,7 +94,7 @@ namespace Mk.Cryptography
 
         public static BigInteger PositiveModulo(BigInteger dividend, BigInteger divisor)
         {
-            var remainder = BigInteger.Remainder(dividend, divisor);
+            var remainder = dividend % divisor;
 
             if (remainder < 0)
                 remainder += divisor;

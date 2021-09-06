@@ -2,15 +2,17 @@
 
 namespace Mk.Cryptography
 {
-    public struct Point2
+    public struct EcPoint
     {
         public BigInteger X { get; set; }
         public BigInteger Y { get; set; }
         
-        public Point2(BigInteger x, BigInteger y)
+        public EcPoint(BigInteger x, BigInteger y)
         {
             X = x;
             Y = y;
         }
+
+        public bool IsZero => Y.IsZero;
     }
 }
