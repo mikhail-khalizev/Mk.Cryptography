@@ -20,7 +20,7 @@ namespace Mk.Cryptography.Tests
         {
             // https://cdn.rawgit.com/andreacorbellini/ecc/920b29a/interactive/modk-add.html
 
-            var curve = new Curve(2, 3, 1, 1, 97);
+            var curve = new Curve(2, 3, 0, 0, 97, 0);
 
             var c = curve.Add(
                 new EcPoint(ax, ay),
@@ -41,7 +41,7 @@ namespace Mk.Cryptography.Tests
         {
             // https://cdn.rawgit.com/andreacorbellini/ecc/920b29a/interactive/modk-mul.html
 
-            var curve = new Curve(2, 3, 1, 1, 97);
+            var curve = new Curve(2, 3, 0, 0, 97, 0);
 
             var c = curve.Multiply(
                 new EcPoint(ax, ay),
@@ -49,6 +49,15 @@ namespace Mk.Cryptography.Tests
 
             c.X.Should().Be(cx);
             c.Y.Should().Be(cy);
+        }
+
+        [Fact]
+        public void CheckQofFp256BN()
+        {
+            var c = Curve.Fp256BN;
+
+            var p = c.Multiply(c.BasePoint, c.Q);
+            p.IsZero.Should().BeTrue();
         }
     }
 }

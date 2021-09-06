@@ -25,20 +25,22 @@ namespace Mk.Cryptography
         /// </remarks>
         public static Curve Fp256BN { get; } = new(
             0, 3, 1, 2,
-            "fffffffffffcf0cd46e5f25eee71a49f0cdc65fb12980a82d3292ddbaed33013");
+            "fffffffffffcf0cd46e5f25eee71a49f0cdc65fb12980a82d3292ddbaed33013",
+            "fffffffffffcf0cd46e5f25eee71a49e0cdc65fb1299921af62d536cd10b500d");
 
 
         public BigInteger A { get; }
         public BigInteger B { get; }
         public BigInteger P { get; }
+        public BigInteger Q { get; }
 
         public EcPoint BasePoint { get; }
 
-        public Curve(BigInteger a, BigInteger b, BigInteger x, BigInteger y, string pHex)
-            : this(a, b, x, y, BigInteger.Parse('0' + pHex, NumberStyles.HexNumber))
+        public Curve(BigInteger a, BigInteger b, BigInteger x, BigInteger y, string pHex, string qHex)
+            : this(a, b, x, y, BigInteger.Parse('0' + pHex, NumberStyles.HexNumber), BigInteger.Parse('0' + qHex, NumberStyles.HexNumber))
         { }
 
-        public Curve(BigInteger a, BigInteger b, BigInteger x, BigInteger y, BigInteger p)
+        public Curve(BigInteger a, BigInteger b, BigInteger x, BigInteger y, BigInteger p, BigInteger q)
         {
             if (p <= 0)
                 throw new ArgumentOutOfRangeException($"'{nameof(p)}' is negative or zero.");
@@ -46,6 +48,7 @@ namespace Mk.Cryptography
             A = a;
             B = b;
             P = p;
+            Q = q;
             BasePoint = new EcPoint(x, y);
         }
 
@@ -96,7 +99,7 @@ namespace Mk.Cryptography
             return point;
         }
 
-        public EcPoint Multiply(EcPoint a, int n)
+        public EcPoint Multiply(EcPoint a, BigInteger n)
         {
             if (n < 0)
                 throw new ArgumentOutOfRangeException(nameof(n));
