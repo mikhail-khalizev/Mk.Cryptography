@@ -13,13 +13,13 @@ namespace Mk.Cryptography
             Point = point;
         }
 
-        public bool Verify(BigInteger message, EcSignature signature)
+        public bool Verify(BigInteger messageHash, EcSignature signature)
         {
             var inv = CryptMath.Invert(signature.S, Curve.N);
 
             var u1 = Curve.Multiply(
                 Curve.G,
-                CryptMath.PositiveModulo((message * inv), Curve.N));
+                CryptMath.PositiveModulo(messageHash * inv, Curve.N));
             
             var u2 = Curve.Multiply(
                 Point,

@@ -26,14 +26,26 @@ namespace Mk.Cryptography
                 Curve.Multiply(Curve.G, Secret));
         }
 
-        // Message usually is sha256 result of real message.
-        public EcSignature Sign(BigInteger message)
+        // MessageHash usually is sha256 result of real message.
+        public EcSignature Sign(BigInteger messageHash)
         {
-            var randNum = CryptMath.BigRandom(1, Curve.N);
-            var randSignPoint = Curve.Multiply(Curve.G, randNum);
+            BigInteger r;
+            BigInteger s;
 
-            var r = CryptMath.PositiveModulo(randSignPoint.X, Curve.N);
-            var s = CryptMath.PositiveModulo((message + r * Secret) * CryptMath.Invert(randNum, Curve.N), Curve.N);
+            do
+            {
+                BigInteger k;
+
+                do
+                {
+                    k = CryptMath.BigRandom(1, Curve.N);
+                    var p = Curve.Multiply(Curve.G, k);
+
+                    r = CryptMath.PositiveModulo(p.X, Curve.N);
+                } while (r == 0);
+
+                s = CryptMath.PositiveModulo((messageHash + r * Secret) * CryptMath.Invert(k, Curve.N), Curve.N);
+            } while (s == 0);
 
             return new EcSignature(r, s);
         }
